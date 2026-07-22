@@ -52,6 +52,29 @@ class LoginPage(BasePage):
             )
         )
 
+        self.signup_section = page.locator(
+            ".signup-form"
+        )
+
+        self.signup_name_input = (
+            self.signup_section.get_by_placeholder(
+                "Name"
+            )
+        )
+
+        self.signup_email_input = (
+            self.signup_section.get_by_placeholder(
+                "Email Address"
+            )
+        )
+
+        self.signup_button = (
+            self.signup_section.get_by_role(
+                "button",
+                name="Signup",
+            )
+        )
+
     def open(self) -> "LoginPage":
         """Open the signup and login page."""
 
@@ -73,3 +96,18 @@ class LoginPage(BasePage):
         """Submit the login form."""
 
         self.login_button.click()
+
+    def fill_signup_form(
+        self,
+        name: str,
+        email: str,
+    ) -> None:
+        """Fill the initial signup form."""
+
+        self.signup_name_input.fill(name)
+        self.signup_email_input.fill(email)
+
+    def submit_signup(self) -> None:
+        """Submit the initial signup form."""
+
+        self.signup_button.click()

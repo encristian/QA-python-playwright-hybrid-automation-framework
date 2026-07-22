@@ -5,13 +5,18 @@ from playwright.sync_api import Page, expect
 from pages.home_page import HomePage
 
 
-def test_home_page_is_displayed(page: Page) -> None:
+def test_home_page_is_displayed(
+    page: Page,
+    home_page: HomePage,
+) -> None:
     """Verify that the homepage loads correctly."""
 
-    home_page = HomePage(page).open()
+    home_page.open()
 
     expect(page).to_have_url(
-        re.compile(r"automationexercise\.com/?$")
+        re.compile(
+            r"automationexercise\.com/?$"
+        )
     )
 
     expect(

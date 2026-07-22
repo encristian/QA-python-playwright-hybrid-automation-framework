@@ -9,11 +9,12 @@ from pages.products_page import ProductsPage
 
 def test_user_can_navigate_to_products_page(
     page: Page,
+    home_page: HomePage,
+    products_page: ProductsPage,
 ) -> None:
     """Verify navigation to the products page."""
 
-    home_page = HomePage(page).open()
-    products_page = ProductsPage(page)
+    home_page.open()
 
     expect(
         home_page.products_link
@@ -32,11 +33,12 @@ def test_user_can_navigate_to_products_page(
 
 def test_user_can_navigate_to_signup_login_page(
     page: Page,
+    home_page: HomePage,
+    login_page: LoginPage,
 ) -> None:
     """Verify navigation to the signup and login page."""
 
-    home_page = HomePage(page).open()
-    login_page = LoginPage(page)
+    home_page.open()
 
     expect(
         home_page.signup_login_link
@@ -59,11 +61,12 @@ def test_user_can_navigate_to_signup_login_page(
 
 def test_user_can_navigate_to_contact_page(
     page: Page,
+    home_page: HomePage,
+    contact_page: ContactPage,
 ) -> None:
     """Verify navigation to the contact page."""
 
-    home_page = HomePage(page).open()
-    contact_page = ContactPage(page)
+    home_page.open()
 
     expect(
         home_page.contact_us_link
@@ -82,11 +85,12 @@ def test_user_can_navigate_to_contact_page(
 
 def test_user_can_navigate_to_empty_cart(
     page: Page,
+    home_page: HomePage,
+    cart_page: CartPage,
 ) -> None:
     """Verify navigation to an empty shopping cart."""
 
-    home_page = HomePage(page).open()
-    cart_page = CartPage(page)
+    home_page.open()
 
     expect(
         home_page.cart_link
@@ -104,11 +108,11 @@ def test_user_can_navigate_to_empty_cart(
 
 
 def test_login_form_accepts_user_input(
-    page: Page,
+    login_page: LoginPage,
 ) -> None:
     """Verify that login fields accept user input."""
 
-    login_page = LoginPage(page).open()
+    login_page.open()
 
     expect(
         login_page.email_input
@@ -149,4 +153,46 @@ def test_login_form_accepts_user_input(
 
     expect(
         login_page.login_button
+    ).to_be_enabled()
+
+
+def test_signup_form_accepts_generated_user_data(
+    login_page: LoginPage,
+    generated_user: dict[str, str],
+) -> None:
+    """Verify signup fields using generated test data."""
+
+    login_page.open()
+
+    expect(
+        login_page.signup_name_input
+    ).to_be_visible()
+
+    expect(
+        login_page.signup_email_input
+    ).to_be_visible()
+
+    login_page.fill_signup_form(
+        name=generated_user["name"],
+        email=generated_user["email"],
+    )
+
+    expect(
+        login_page.signup_name_input
+    ).to_have_value(
+        generated_user["name"]
+    )
+
+    expect(
+        login_page.signup_email_input
+    ).to_have_value(
+        generated_user["email"]
+    )
+
+    expect(
+        login_page.signup_button
+    ).to_be_visible()
+
+    expect(
+        login_page.signup_button
     ).to_be_enabled()
