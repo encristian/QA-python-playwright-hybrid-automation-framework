@@ -1,49 +1,32 @@
-import re
-
 from playwright.sync_api import Page, expect
 
-
-BASE_URL = "https://automationexercise.com"
-
-
-def open_home_page(page: Page) -> None:
-    """Open the Automation Exercise homepage."""
-
-    page.goto(
-        BASE_URL,
-        wait_until="domcontentloaded",
-        timeout=60_000,
-    )
+from pages.cart_page import CartPage
+from pages.contact_page import ContactPage
+from pages.home_page import HomePage
+from pages.login_page import LoginPage
+from pages.products_page import ProductsPage
 
 
 def test_user_can_navigate_to_products_page(
     page: Page,
 ) -> None:
-    """Verify navigation from the homepage to the products page."""
+    """Verify navigation to the products page."""
 
-    open_home_page(page)
+    home_page = HomePage(page).open()
+    products_page = ProductsPage(page)
 
-    products_link = page.get_by_role(
-        "link",
-        name="Products",
-    )
+    expect(
+        home_page.products_link
+    ).to_be_visible()
 
-    expect(products_link).to_be_visible()
-
-    products_link.click()
+    home_page.go_to_products()
 
     expect(page).to_have_url(
-        re.compile(r"/products/?$")
+        products_page.URL_PATTERN
     )
 
     expect(
-        page.get_by_role(
-            "heading",
-            name=re.compile(
-                "All Products",
-                re.IGNORECASE,
-            ),
-        )
+        products_page.all_products_heading
     ).to_be_visible()
 
 
@@ -52,39 +35,25 @@ def test_user_can_navigate_to_signup_login_page(
 ) -> None:
     """Verify navigation to the signup and login page."""
 
-    open_home_page(page)
+    home_page = HomePage(page).open()
+    login_page = LoginPage(page)
 
-    signup_login_link = page.get_by_role(
-    "link",
-    name="Signup / Login",
-)
+    expect(
+        home_page.signup_login_link
+    ).to_be_visible()
 
-    expect(signup_login_link).to_be_visible()
-
-    signup_login_link.click()
+    home_page.go_to_signup_login()
 
     expect(page).to_have_url(
-        re.compile(r"/login/?$")
+        login_page.URL_PATTERN
     )
 
     expect(
-        page.get_by_role(
-            "heading",
-            name=re.compile(
-                "Login to your account",
-                re.IGNORECASE,
-            ),
-        )
+        login_page.login_heading
     ).to_be_visible()
 
     expect(
-        page.get_by_role(
-            "heading",
-            name=re.compile(
-                "New User Signup",
-                re.IGNORECASE,
-            ),
-        )
+        login_page.signup_heading
     ).to_be_visible()
 
 
@@ -93,107 +62,91 @@ def test_user_can_navigate_to_contact_page(
 ) -> None:
     """Verify navigation to the contact page."""
 
-    open_home_page(page)
+    home_page = HomePage(page).open()
+    contact_page = ContactPage(page)
 
-    contact_link = page.get_by_role(
-        "link",
-        name=re.compile(
-            "Contact us",
-            re.IGNORECASE,
-        ),
-    )
+    expect(
+        home_page.contact_us_link
+    ).to_be_visible()
 
-    expect(contact_link).to_be_visible()
-
-    contact_link.click()
+    home_page.go_to_contact_us()
 
     expect(page).to_have_url(
-        re.compile(r"/contact_us/?$")
+        contact_page.URL_PATTERN
     )
 
     expect(
-        page.get_by_role(
-            "heading",
-            name=re.compile(
-                "Get In Touch",
-                re.IGNORECASE,
-            ),
-        )
+        contact_page.get_in_touch_heading
     ).to_be_visible()
 
 
 def test_user_can_navigate_to_empty_cart(
     page: Page,
 ) -> None:
-    """Verify that a new user can open an empty cart."""
+    """Verify navigation to an empty shopping cart."""
 
-    open_home_page(page)
+    home_page = HomePage(page).open()
+    cart_page = CartPage(page)
 
-    cart_link = page.get_by_role(
-        "link",
-        name="Cart",
-    )
+    expect(
+        home_page.cart_link
+    ).to_be_visible()
 
-    expect(cart_link).to_be_visible()
-
-    cart_link.click()
+    home_page.go_to_cart()
 
     expect(page).to_have_url(
-        re.compile(r"/view_cart/?$")
+        cart_page.URL_PATTERN
     )
 
     expect(
-        page.get_by_text(
-            re.compile(
-                "Cart is empty",
-                re.IGNORECASE,
-            )
-        )
+        cart_page.empty_cart_message
     ).to_be_visible()
 
 
 def test_login_form_accepts_user_input(
     page: Page,
 ) -> None:
-    """Verify that the login fields accept user input."""
+    """Verify that login fields accept user input."""
 
-    page.goto(
-        f"{BASE_URL}/login",
-        wait_until="domcontentloaded",
-        timeout=60_000,
+    login_page = LoginPage(page).open()
+
+    expect(
+        login_page.email_input
+    ).to_be_visible()
+
+    expect(
+        login_page.email_input
+    ).to_be_editable()
+
+    expect(
+        login_page.password_input
+    ).to_be_visible()
+
+    expect(
+        login_page.password_input
+    ).to_be_editable()
+
+    login_page.fill_login_form(
+        email="qa.test@example.com",
+        password="incorrect-password",
     )
 
-    login_section = page.locator(".login-form")
-
-    email_input = login_section.get_by_placeholder(
-        "Email Address"
-    )
-
-    password_input = login_section.get_by_placeholder(
-        "Password"
-    )
-
-    login_button = login_section.get_by_role(
-        "button",
-        name="Login",
-    )
-
-    expect(email_input).to_be_visible()
-    expect(email_input).to_be_editable()
-
-    expect(password_input).to_be_visible()
-    expect(password_input).to_be_editable()
-
-    email_input.fill("qa.test@example.com")
-    password_input.fill("incorrect-password")
-
-    expect(email_input).to_have_value(
+    expect(
+        login_page.email_input
+    ).to_have_value(
         "qa.test@example.com"
     )
 
-    expect(password_input).to_have_value(
+    expect(
+        login_page.password_input
+    ).to_have_value(
         "incorrect-password"
     )
 
-    expect(login_button).to_be_visible()
-    expect(login_button).to_be_enabled()
+    expect(
+        login_page.login_button
+    ).to_be_visible()
+
+    expect(
+        login_page.login_button
+    ).to_be_enabled()

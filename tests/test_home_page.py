@@ -2,31 +2,26 @@ import re
 
 from playwright.sync_api import Page, expect
 
-
-BASE_URL = "https://automationexercise.com"
+from pages.home_page import HomePage
 
 
 def test_home_page_is_displayed(page: Page) -> None:
-    """Verify that the Automation Exercise homepage loads correctly."""
+    """Verify that the homepage loads correctly."""
 
-    page.goto(
-        BASE_URL,
-        wait_until="domcontentloaded",
-        timeout=60_000,
-    )
+    home_page = HomePage(page).open()
 
     expect(page).to_have_url(
         re.compile(r"automationexercise\.com/?$")
     )
 
     expect(
-        page.get_by_role("link", name="Home").first
+        home_page.home_link
     ).to_be_visible()
 
     expect(
-        page.get_by_role("link", name="Products").first
+        home_page.products_link
     ).to_be_visible()
 
     expect(
-        page.get_by_role("link", name="Signup / Login").first
+        home_page.signup_login_link
     ).to_be_visible()
