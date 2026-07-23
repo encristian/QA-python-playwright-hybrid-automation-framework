@@ -13,6 +13,7 @@ class LoginPage(BasePage):
     def __init__(self, page: Page) -> None:
         super().__init__(page)
 
+        # Headings
         self.login_heading = page.get_by_role(
             "heading",
             name=re.compile(
@@ -29,6 +30,7 @@ class LoginPage(BasePage):
             ),
         )
 
+        # Login section
         self.login_section = page.locator(
             ".login-form"
         )
@@ -52,6 +54,14 @@ class LoginPage(BasePage):
             )
         )
 
+        self.invalid_credentials_error = (
+            self.login_section.get_by_text(
+                "Your email or password is incorrect!",
+                exact=True,
+            )
+        )
+
+        # Signup section
         self.signup_section = page.locator(
             ".signup-form"
         )
@@ -96,6 +106,20 @@ class LoginPage(BasePage):
         """Submit the login form."""
 
         self.login_button.click()
+
+    def login(
+        self,
+        email: str,
+        password: str,
+    ) -> None:
+        """Fill and submit the login form."""
+
+        self.fill_login_form(
+            email=email,
+            password=password,
+        )
+
+        self.submit_login()
 
     def fill_signup_form(
         self,

@@ -7,6 +7,8 @@ from pages.contact_page import ContactPage
 from pages.home_page import HomePage
 from pages.login_page import LoginPage
 from pages.products_page import ProductsPage
+from pages.product_details_page import ProductDetailsPage
+
 
 
 @pytest.fixture(scope="session")
@@ -85,3 +87,11 @@ def cart_page(
     """Provide the cart page object."""
 
     return CartPage(page)
+
+@pytest.fixture
+def product_details_page(
+    page: Page,
+) -> ProductDetailsPage:
+    """Provide the product details page object."""
+
+    return ProductDetailsPage(page)
