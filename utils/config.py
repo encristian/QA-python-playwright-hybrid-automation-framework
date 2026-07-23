@@ -17,3 +17,15 @@ DEFAULT_TIMEOUT = int(
         "60000",
     )
 )
+
+API_BASE_URL = os.getenv(
+    "API_BASE_URL",
+    f"{BASE_URL}/api",
+).rstrip("/")
+
+API_TIMEOUT = int(
+    os.getenv(
+        "API_TIMEOUT",
+        "30",
+    )
+)

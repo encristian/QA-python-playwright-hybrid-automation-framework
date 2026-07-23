@@ -18,6 +18,9 @@ from pages.product_details_page import (
 from pages.products_page import ProductsPage
 from pages.signup_page import SignupPage
 
+from typing import Generator
+from api.api_client import ApiClient
+
 
 @pytest.fixture(scope="session")
 def fake() -> Faker:
@@ -153,3 +156,14 @@ def cart_page(
     """Provide the cart page object."""
 
     return CartPage(page)
+
+@pytest.fixture(scope="session")
+def api_client(
+) -> Generator[ApiClient, None, None]:
+    """Provide one reusable API client per test session."""
+
+    client = ApiClient()
+
+    yield client
+
+    client.close()
