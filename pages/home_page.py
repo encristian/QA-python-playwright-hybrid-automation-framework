@@ -1,6 +1,6 @@
 import re
 
-from playwright.sync_api import Page
+from playwright.sync_api import Locator, Page
 
 from pages.base_page import BasePage
 
@@ -39,12 +39,44 @@ class HomePage(BasePage):
             name="Cart",
         ).first
 
+        self.logout_link = page.get_by_role(
+            "link",
+            name="Logout",
+        ).first
+
+        self.delete_account_link = (
+            page.get_by_role(
+                "link",
+                name="Delete Account",
+            ).first
+        )
+
     def open(self) -> "HomePage":
         """Open the homepage."""
 
         self.open_path()
 
         return self
+
+    def logged_in_as(
+        self,
+        user_name: str,
+    ) -> Locator:
+        """Return the logged-in user indicator."""
+
+        return (
+            self.page.locator("a")
+            .filter(
+                has_text=re.compile(
+                    (
+                        rf"Logged in as\s*"
+                        rf"{re.escape(user_name)}"
+                    ),
+                    re.IGNORECASE,
+                )
+            )
+            .first
+        )
 
     def go_to_products(self) -> None:
         """Open the products page."""
@@ -65,3 +97,13 @@ class HomePage(BasePage):
         """Open the shopping cart."""
 
         self.cart_link.click()
+
+    def logout(self) -> None:
+        """Log out the current user."""
+
+        self.logout_link.click()
+
+    def delete_account(self) -> None:
+        """Delete the current user account."""
+
+        self.delete_account_link.click()

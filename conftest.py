@@ -2,13 +2,21 @@ import pytest
 from faker import Faker
 from playwright.sync_api import Page
 
+from pages.account_created_page import (
+    AccountCreatedPage,
+)
+from pages.account_deleted_page import (
+    AccountDeletedPage,
+)
 from pages.cart_page import CartPage
 from pages.contact_page import ContactPage
 from pages.home_page import HomePage
 from pages.login_page import LoginPage
+from pages.product_details_page import (
+    ProductDetailsPage,
+)
 from pages.products_page import ProductsPage
-from pages.product_details_page import ProductDetailsPage
-
+from pages.signup_page import SignupPage
 
 
 @pytest.fixture(scope="session")
@@ -22,12 +30,23 @@ def fake() -> Faker:
 def generated_user(
     fake: Faker,
 ) -> dict[str, str]:
-    """Generate unique test data for one user."""
+    """Generate unique data for one test user."""
 
     first_name = fake.first_name()
     last_name = fake.last_name()
 
+    mobile_number = (
+        "07"
+        + str(
+            fake.random_number(
+                digits=8,
+                fix_len=True,
+            )
+        )
+    )
+
     return {
+        "title": "Mr",
         "name": f"{first_name} {last_name}",
         "first_name": first_name,
         "last_name": last_name,
@@ -41,6 +60,17 @@ def generated_user(
             upper_case=True,
             lower_case=True,
         ),
+        "birth_day": "15",
+        "birth_month": "5",
+        "birth_year": "1995",
+        "company": fake.company(),
+        "address": fake.street_address(),
+        "address2": fake.secondary_address(),
+        "country": "United States",
+        "state": fake.state(),
+        "city": fake.city(),
+        "zipcode": fake.postcode(),
+        "mobile_number": mobile_number,
     }
 
 
@@ -63,12 +93,48 @@ def products_page(
 
 
 @pytest.fixture
+def product_details_page(
+    page: Page,
+) -> ProductDetailsPage:
+    """Provide the product details page object."""
+
+    return ProductDetailsPage(page)
+
+
+@pytest.fixture
 def login_page(
     page: Page,
 ) -> LoginPage:
     """Provide the login page object."""
 
     return LoginPage(page)
+
+
+@pytest.fixture
+def signup_page(
+    page: Page,
+) -> SignupPage:
+    """Provide the full signup page object."""
+
+    return SignupPage(page)
+
+
+@pytest.fixture
+def account_created_page(
+    page: Page,
+) -> AccountCreatedPage:
+    """Provide the account created page object."""
+
+    return AccountCreatedPage(page)
+
+
+@pytest.fixture
+def account_deleted_page(
+    page: Page,
+) -> AccountDeletedPage:
+    """Provide the account deleted page object."""
+
+    return AccountDeletedPage(page)
 
 
 @pytest.fixture
@@ -87,11 +153,3 @@ def cart_page(
     """Provide the cart page object."""
 
     return CartPage(page)
-
-@pytest.fixture
-def product_details_page(
-    page: Page,
-) -> ProductDetailsPage:
-    """Provide the product details page object."""
-
-    return ProductDetailsPage(page)
