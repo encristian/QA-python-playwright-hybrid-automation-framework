@@ -1,3 +1,4 @@
+import pytest
 from playwright.sync_api import Page, expect
 
 from pages.cart_page import CartPage
@@ -6,6 +7,11 @@ from pages.home_page import HomePage
 from pages.login_page import LoginPage
 from pages.products_page import ProductsPage
 
+
+pytestmark = [
+    pytest.mark.ui,
+    pytest.mark.regression,
+]
 
 def test_user_can_navigate_to_products_page(
     page: Page,

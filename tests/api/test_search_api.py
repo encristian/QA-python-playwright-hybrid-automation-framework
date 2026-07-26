@@ -6,6 +6,10 @@ import pytest
 from api.api_client import ApiClient
 from api.endpoints import ApiEndpoints
 
+pytestmark = [
+    pytest.mark.api,
+    pytest.mark.regression,
+]
 
 def normalize_text(value: str) -> str:
     """Normalize text for case-insensitive search comparison."""

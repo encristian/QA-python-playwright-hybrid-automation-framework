@@ -12,7 +12,12 @@ from pages.home_page import HomePage
 from pages.login_page import LoginPage
 from pages.products_page import ProductsPage
 from utils.network_recorder import NetworkRecorder
+import pytest
 
+pytestmark = [
+    pytest.mark.network,
+    pytest.mark.regression,
+]
 
 def has_path(
     url: str,

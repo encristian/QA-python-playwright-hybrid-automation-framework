@@ -6,7 +6,12 @@ from api.user_payloads import (
     build_account_payload,
     build_credentials,
 )
+import pytest
 
+pytestmark = [
+    pytest.mark.api,
+    pytest.mark.regression,
+]
 
 def get_response_code(
     payload: Dict[str, Any],

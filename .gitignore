@@ -13,8 +13,10 @@ __pycache__/
 test-results/
 playwright-report/
 
-# Reports and evidence
+# Reports and Playwright artifacts
 reports/
+test-results/
+playwright-report/
 screenshots/
 videos/
 traces/

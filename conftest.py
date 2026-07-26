@@ -1,7 +1,7 @@
 import pytest
 from faker import Faker
 from playwright.sync_api import Page
-
+from pathlib import Path
 from pages.account_created_page import (
     AccountCreatedPage,
 )
@@ -285,3 +285,20 @@ def api_registered_user(
                 f"Received: "
                 f"{delete_payload.get('message')}"
             )
+            
+def pytest_configure(config) -> None:
+    """Create directories needed by test reports."""
+
+    Path("reports").mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+
+def pytest_html_report_title(report) -> None:
+    """Set a descriptive title for the HTML report."""
+
+    report.title = (
+        "Python Playwright Hybrid "
+        "Automation Framework"
+    )

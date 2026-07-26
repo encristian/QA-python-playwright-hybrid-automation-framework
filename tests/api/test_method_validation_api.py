@@ -2,7 +2,12 @@ from typing import Any, Dict
 
 from api.api_client import ApiClient
 from api.endpoints import ApiEndpoints
+import pytest
 
+pytestmark = [
+    pytest.mark.api,
+    pytest.mark.regression,
+]
 
 EXPECTED_METHOD_ERROR = (
     "This request method is not supported."

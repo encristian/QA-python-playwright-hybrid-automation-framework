@@ -5,6 +5,10 @@ import pytest
 from api.api_client import ApiClient
 from api.endpoints import ApiEndpoints
 
+pytestmark = [
+    pytest.mark.api,
+    pytest.mark.regression,
+]
 
 @pytest.fixture(scope="module")
 def products_payload(
@@ -43,7 +47,7 @@ def brands_payload(
 
     return api_client.json_body(response)
 
-
+@pytest.mark.smoke
 def test_get_all_products_returns_non_empty_list(
     products_payload: Dict[str, Any],
 ) -> None:

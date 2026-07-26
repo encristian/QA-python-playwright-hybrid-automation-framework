@@ -5,8 +5,14 @@ from playwright.sync_api import Page, expect
 
 from pages.home_page import HomePage
 from pages.login_page import LoginPage
+import pytest
 
+pytestmark = [
+    pytest.mark.integration,
+    pytest.mark.regression,
+]
 
+@pytest.mark.smoke
 def test_user_created_by_api_can_login_through_ui(
     page: Page,
     home_page: HomePage,

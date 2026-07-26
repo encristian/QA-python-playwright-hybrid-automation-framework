@@ -12,7 +12,12 @@ from mocks.product_responses import (
 )
 from pages.home_page import HomePage
 from pages.products_page import ProductsPage
+import pytest
 
+pytestmark = [
+    pytest.mark.mocking,
+    pytest.mark.regression,
+]
 
 def fetch_products_from_browser(
     page: Page,

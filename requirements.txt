@@ -6,6 +6,8 @@ Faker==37.12.0
 greenlet==3.2.5
 idna==3.18
 iniconfig==2.1.0
+Jinja2==3.1.6
+MarkupSafe==3.0.3
 packaging==26.2
 playwright==1.60.0
 pluggy==1.6.0
@@ -13,6 +15,8 @@ pyee==13.0.1
 Pygments==2.20.0
 pytest==8.4.2
 pytest-base-url==2.1.0
+pytest-html==4.2.0
+pytest-metadata==3.1.1
 pytest-playwright==0.7.1
 python-dotenv==1.2.1
 python-slugify==8.0.4

@@ -1,5 +1,6 @@
 import re
 
+import pytest
 from playwright.sync_api import Page, expect
 
 from pages.account_created_page import (
@@ -12,6 +13,12 @@ from pages.home_page import HomePage
 from pages.login_page import LoginPage
 from pages.signup_page import SignupPage
 
+
+pytestmark = [
+    pytest.mark.ui,
+    pytest.mark.e2e,
+    pytest.mark.regression,
+]
 
 def test_user_can_register_login_and_delete_account(
     page: Page,

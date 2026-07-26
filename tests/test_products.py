@@ -9,6 +9,11 @@ from pages.product_details_page import (
 from pages.products_page import ProductsPage
 
 
+pytestmark = [
+    pytest.mark.ui,
+    pytest.mark.regression,
+]
+
 @pytest.mark.parametrize(
     ("search_term", "expected_product"),
     [

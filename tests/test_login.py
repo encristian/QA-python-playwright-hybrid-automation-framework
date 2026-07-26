@@ -1,7 +1,13 @@
+import pytest
 from playwright.sync_api import expect
 
 from pages.login_page import LoginPage
 
+
+pytestmark = [
+    pytest.mark.ui,
+    pytest.mark.regression,
+]
 
 def test_login_with_invalid_credentials_shows_error(
     login_page: LoginPage,

@@ -1,8 +1,15 @@
 import re
 
+import pytest
 from playwright.sync_api import Page, expect
 
 from pages.home_page import HomePage
+
+
+pytestmark = [
+    pytest.mark.ui,
+    pytest.mark.smoke,
+]
 
 
 def test_home_page_is_displayed(
