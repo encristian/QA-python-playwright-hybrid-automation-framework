@@ -105,6 +105,7 @@ class LoginPage(BasePage):
     def submit_login(self) -> None:
         """Submit the login form."""
 
+        self.dismiss_cookie_consent()
         self.login_button.click()
 
     def login(
