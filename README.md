@@ -42,7 +42,7 @@ This project covers:
 
 ## Background
 
-I have almost 3 years of experience as a QC Tester and created this project to practice and demonstrate QA Automation skills using Python, Playwright, PyTest and Requests.
+I have 2 years of experience as a QC Tester and created this project to practice and demonstrate QA Automation skills using Python, Playwright, PyTest and Requests.
 
 This project is part of my QA Automation portfolio and is intended to showcase my ability to write automated UI and API tests, build a reusable test automation framework, combine frontend and backend testing and use version control with Git.
 
