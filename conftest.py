@@ -37,11 +37,16 @@ def fake() -> Faker:
 @pytest.fixture
 def generated_user(
     fake: Faker,
+    worker_id: str,
 ) -> dict[str, str]:
     """Generate unique data for one test user."""
 
     first_name = fake.first_name()
     last_name = fake.last_name()
+
+    unique_id = (
+        f"{worker_id}-{fake.uuid4()}"
+    )
 
     mobile_number = (
         "07"
@@ -59,7 +64,7 @@ def generated_user(
         "first_name": first_name,
         "last_name": last_name,
         "email": (
-            f"qa.{fake.uuid4()}@example.com"
+            f"qa.{unique_id}@example.com"
         ),
         "password": fake.password(
             length=14,
